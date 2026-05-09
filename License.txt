@@ -1,0 +1,15 @@
+Proprietary Software License
+
+Copyright (c) 2026 Jared De Santis / Limitless Mobile Applications
+
+All rights reserved.
+
+This software, including its source code, interface design, assets, documentation, and related files, is proprietary and may not be copied, modified, redistributed, sublicensed, sold, or used to create derivative products without prior written permission from the copyright holder.
+
+Permission is granted to download, install, and use this software for personal evaluation, demonstration, and internal testing purposes only.
+
+Commercial use, resale, white-label use, hosted redistribution, paid training-pack distribution, or integration into another software platform requires a separate written license agreement.
+
+This software is provided "as is", without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. In no event shall the copyright holder be liable for any claim, damages, or other liability arising from the use of this software.
+
+ChatGPT assisted with coding and drafting support as a software development aid. Ownership and project direction remain with Jared De Santis / Limitless Mobile Applications.

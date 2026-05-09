@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#17251f" />
+  <title>LMA Dog Trainer</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Offline-first PWA Prototype</p>
+      <h1>LMA Dog Trainer</h1>
+      <p class="subtitle">Dog profiles, session logs, audio cues, progress tracking, and portable ZIP training packs.</p>
+    </div>
+    <div class="header-actions">
+      <span id="storageStatus" class="storage-pill">Media storage: checking</span>
+      <button id="installBtn" class="secondary hidden">Install App</button>
+      <button id="exportZipBtn">Export ZIP Pack</button>
+      <label class="file-label">
+        Import ZIP Pack
+        <input id="importZipInput" type="file" accept=".zip,application/zip" />
+      </label>
+    </div>
+  </header>
+
+  <main class="layout">
+    <nav class="tabs" aria-label="Main sections">
+      <button class="tab active" data-tab="profiles">Dogs</button>
+      <button class="tab" data-tab="sessions">Sessions</button>
+      <button class="tab" data-tab="audio">Audio Cues</button>
+      <button class="tab" data-tab="progress">Progress</button>
+      <button class="tab" data-tab="about">About</button>
+    </nav>
+
+    <section id="profiles" class="panel active">
+      <div class="panel-head">
+        <h2>Dog Profiles</h2>
+        <p>Add each dog, attach a profile photo, and keep trainer-facing notes.</p>
+      </div>
+
+      <form id="profileForm" class="card form-grid">
+        <input type="hidden" id="profileId" />
+        <label>
+          Dog Name
+          <input id="dogName" required placeholder="Remus" />
+        </label>
+        <label>
+          Breed / Mix
+          <input id="dogBreed" placeholder="Labrador mix, German Shepherd, etc." />
+        </label>
+        <label>
+          Age
+          <input id="dogAge" placeholder="2 years" />
+        </label>
+        <label>
+          Temperament
+          <input id="dogTemperament" placeholder="Calm, reactive, high drive..." />
+        </label>
+        <label class="wide">
+          Profile Photo
+          <input id="dogPhoto" type="file" accept="image/*" capture="environment" />
+        </label>
+        <label class="wide">
+          Notes
+          <textarea id="dogNotes" placeholder="Triggers, rewards, medical notes, owner goals..."></textarea>
+        </label>
+        <div class="form-actions wide">
+          <button type="submit" id="profileSubmit">Save Profile</button>
+          <button type="button" id="profileCancel" class="secondary hidden">Cancel Edit</button>
+        </div>
+      </form>
+
+      <div id="profileList" class="card-list"></div>
+    </section>
+
+    <section id="sessions" class="panel">
+      <div class="panel-head">
+        <h2>Training Sessions</h2>
+        <p>Log real-world training work by dog, environment, commands, and outcome.</p>
+      </div>
+
+      <form id="sessionForm" class="card form-grid">
+        <label>
+          Dog
+          <select id="sessionDog"></select>
+        </label>
+        <label>
+          Date
+          <input id="sessionDate" type="date" />
+        </label>
+        <label>
+          Duration
+          <input id="sessionDuration" placeholder="20 min" />
+        </label>
+        <label>
+          Environment
+          <input id="sessionEnvironment" placeholder="Home, park, street, kennel..." />
+        </label>
+        <label class="wide">
+          Skills / Commands Practiced
+          <input id="sessionSkills" placeholder="Recall, place, heel, stay..." />
+        </label>
+        <label class="wide">
+          Session Notes
+          <textarea id="sessionNotes" placeholder="Distractions, response quality, owner homework..."></textarea>
+        </label>
+        <div class="form-actions wide">
+          <button type="submit">Save Session</button>
+        </div>
+      </form>
+
+      <div id="sessionList" class="card-list"></div>
+    </section>
+
+    <section id="audio" class="panel">
+      <div class="panel-head">
+        <h2>Audio Cue Library</h2>
+        <p>Import MP3/WAV cues or record directly in the app. Audio is stored as a real file in OPFS and exported inside ZIP packs.</p>
+      </div>
+
+      <form id="audioForm" class="card form-grid">
+        <input type="hidden" id="audioId" />
+        <label>
+          Cue Name
+          <input id="audioName" required placeholder="Recall whistle" />
+        </label>
+        <label>
+          Category
+          <input id="audioCategory" placeholder="Marker, recall, desensitization..." />
+        </label>
+        <label class="wide">
+          Import Audio File
+          <input id="audioFile" type="file" accept=".mp3,.wav,audio/mpeg,audio/wav,audio/x-wav" />
+        </label>
+        <div class="wide recorder">
+          <div>
+            <strong>Record in App</strong>
+            <p id="recordingStatus">Ready to record. Browser permission may be requested.</p>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="recordBtn" class="secondary">Start Recording</button>
+            <button type="button" id="stopRecordBtn" class="secondary hidden">Stop</button>
+          </div>
+        </div>
+        <label class="wide">
+          Cue Notes
+          <textarea id="audioNotes" placeholder="When and how this sound should be used..."></textarea>
+        </label>
+        <div class="form-actions wide">
+          <button type="submit" id="audioSubmit">Save Audio Cue</button>
+          <button type="button" id="audioCancel" class="secondary hidden">Cancel Edit</button>
+        </div>
+      </form>
+
+      <div id="audioList" class="card-list"></div>
+    </section>
+
+    <section id="progress" class="panel">
+      <div class="panel-head">
+        <h2>Progress Tracking</h2>
+        <p>Capture quick scores for reliability, reactivity, distraction tolerance, and notes over time.</p>
+      </div>
+
+      <form id="progressForm" class="card form-grid">
+        <label>
+          Dog
+          <select id="progressDog"></select>
+        </label>
+        <label>
+          Date
+          <input id="progressDate" type="date" />
+        </label>
+        <label>
+          Metric
+          <select id="progressMetric">
+            <option>Recall Reliability</option>
+            <option>Leash Manners</option>
+            <option>Reactivity</option>
+            <option>Place / Settle</option>
+            <option>Distraction Tolerance</option>
+            <option>Owner Consistency</option>
+          </select>
+        </label>
+        <label>
+          Score 1-5
+          <input id="progressScore" type="number" min="1" max="5" value="3" />
+        </label>
+        <label class="wide">
+          Notes
+          <textarea id="progressNotes" placeholder="What changed, what helped, what needs work..."></textarea>
+        </label>
+        <div class="form-actions wide">
+          <button type="submit">Save Progress</button>
+        </div>
+      </form>
+
+      <div id="progressList" class="card-list"></div>
+    </section>
+
+    <section id="about" class="panel">
+      <div class="panel-head">
+        <h2>About This Prototype</h2>
+        <p>This is a standalone, installable, offline-first prototype intended for real trainer feedback.</p>
+      </div>
+      <div class="card">
+        <h3>Version 6 GitHub-Ready Offline PWA</h3>
+        <p><strong>JSON is now the manifest/index.</strong> Dog photos and audio cues are stored as real files using OPFS where available. On iPhone/iOS or restrictive local servers, the app safely falls back to IndexedDB/localStorage media storage, then exports everything inside ZIP packs under <code>media/photos/</code> and <code>media/audio/</code>. The app includes a web app manifest and service worker so it can be installed and used offline after first load.</p>
+        <p>This keeps the app scalable, avoids huge base64 JSON files, improves playback reliability, and aligns with future encrypted App Library payloads.</p>
+        <h3>Future Premium Path</h3>
+        <p>Video recording should become a future professional/premium feature because it creates high-value trainer deliverables: session review, proof-of-progress clips, remote coaching, and paid client packs.</p>
+      </div>
+    </section>
+  </main>
+
+  <template id="emptyTemplate">
+    <div class="empty">Nothing saved yet.</div>
+  </template>
+
+  <script src="./js/fflate.min.js"></script>
+  <script src="./js/app.js" type="module"></script>
+</body>
+</html>
